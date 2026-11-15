@@ -30,7 +30,7 @@ fi
 # 背景图：2x PNG → 1x PNG → 合并成带 Retina 的 tiff
 BG_DIR="$(mktemp -d)"
 trap 'rm -rf "$BG_DIR"; rm -f "$RW_DMG"' EXIT
-sips -z 420 660 "$BG_SRC" --out "$BG_DIR/bg1x.png" >/dev/null
+sips -z 450 660 "$BG_SRC" --out "$BG_DIR/bg1x.png" >/dev/null
 tiffutil -cathidpicheck "$BG_DIR/bg1x.png" "$BG_SRC" -out "$BG_DIR/background.tiff" >/dev/null
 
 echo "· 组装目录"
@@ -53,7 +53,7 @@ tell application "Finder"
     set current view of container window to icon view
     set toolbar visible of container window to false
     set statusbar visible of container window to false
-    set the bounds of container window to {220, 140, 880, 588}
+    set the bounds of container window to {220, 140, 880, 583}
     set viewOptions to the icon view options of container window
     set arrangement of viewOptions to not arranged
     set icon size of viewOptions to 128
