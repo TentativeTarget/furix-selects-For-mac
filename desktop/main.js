@@ -224,6 +224,9 @@ async function createWindow() {
     show: false,
     backgroundColor: "#0b0c0e",
     title: "FURIX SELECTS · 选片台",
+    // 去掉标题栏，红绿灯按 macOS 标准位置内嵌到顶栏里
+    titleBarStyle: "hiddenInset",
+    trafficLightPosition: { x: 0, y: 18 },
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,

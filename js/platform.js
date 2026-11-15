@@ -8,9 +8,29 @@
   document.documentElement.classList.add("is-mac");
   const MOD = "⌘";
 
-  // 桌面版（Electron）本来就有浏览器内核，不用再叫用户去开 Chrome / Edge
+  // 桌面版本来就有浏览器内核，不用再叫用户去开 Chrome / Edge
   const isDesktop = /Electron\//.test(ua);
-  if (isDesktop) document.documentElement.classList.add("is-desktop");
+  if (isDesktop) {
+    document.documentElement.classList.add("is-desktop");
+    installDesktopChrome();
+  }
+
+  // 无标题栏的窗口：红绿灯浮在顶栏左侧，顶栏要让它 78px，
+  // 同时整条顶栏当拖拽区（按钮/输入框单独挖成可点区域）。
+  function installDesktopChrome() {
+    const style = document.createElement("style");
+    style.id = "furix-desktop-chrome";
+    style.textContent = `
+      .topbar { padding-left: 78px; -webkit-app-region: drag; }
+      .topbar a,
+      .topbar button,
+      .topbar input,
+      .topbar label,
+      .topbar select,
+      .topbar [role="button"] { -webkit-app-region: no-drag; }
+    `;
+    (document.head || document.documentElement).appendChild(style);
+  }
 
   const DESKTOP_REPLACEMENTS = [
     [/文件夹读写需要\s*Chrome\s*\/\s*Edge/g, "照片只在这台电脑上"],
