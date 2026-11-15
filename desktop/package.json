@@ -1,0 +1,9 @@
+{
+  "name": "furix-selects",
+  "productName": "FURIX 选片台",
+  "version": "3.4.0",
+  "description": "FURIX SELECTS · 本地优先的照片选片台",
+  "main": "main.js",
+  "private": true,
+  "author": "YvLvn"
+}

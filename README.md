@@ -12,18 +12,19 @@
 
 ## 启动
 
-需要 Chrome / Edge（项目模式、写文件夹、读系统字体都依赖它们）和 Python 3。
+**macOS**：双击 `FURIX选片台.app`，就这样。窗口里就一个选片台，不用另装浏览器、也不用起服务；关掉窗口进程就结束。第一次点「打开照片文件夹」会弹 macOS 的授权窗，点允许就行。
 
-**Windows**：双击 `启动选片台.cmd`，停止用 `停止选片台.cmd`。
+要重新打包（改了网页之后）：`tools/build-mac-app.sh`，产物在 `dist/`。
 
-**macOS**：双击 `启动选片台.command`，停止用 `停止选片台.command`。
-如果双击提示没有权限，在终端里执行一次：
+**Windows**：双击 `启动选片台.cmd`，停止用 `停止选片台.cmd`。需要 Chrome / Edge 和 Python 3。
+
+**macOS 备用方案**：万一桌面版闹别扭，双击 `启动选片台.command`（起本地服务 + Edge/Chrome 应用窗口），停止用 `停止选片台.command`。如果双击提示没有权限，在终端里执行一次：
 
 ```bash
 chmod +x 启动选片台.command 停止选片台.command
 ```
 
-两个平台都是：起一个只监听 `127.0.0.1` 的静态服务（端口 8731–8799 里挑一个空闲的），再用浏览器的应用窗口打开。服务信息记在 `.server.json`，再次启动会复用。
+浏览器版都是：起一个只监听 `127.0.0.1` 的静态服务（端口 8731–8799 里挑一个空闲的），再用浏览器的应用窗口打开。服务信息记在 `.server.json`，再次启动会复用。
 
 ## 目录
 
@@ -32,13 +33,20 @@ index.html            界面
 styles.css            样式
 js/core.js            标记、筛选、XMP、ZIP、EXIF/RAW、图像与水印合成
 js/app.js             图库、项目、回传、交付、台账、归档等交互
+js/platform.js        macOS 适配：Ctrl 显示成 ⌘，桌面版文案微调
 demo/                 示例图库
+desktop/main.js       桌面版主进程（Electron）：窗口、菜单、内置页面通道
+desktop/package.json
+tools/build-mac-app.sh  重新打包 macOS 桌面版 + 分发 zip
+tools/AppIcon.icns    应用图标
 launcher.ps1 / stop.ps1           Windows 启动器
 启动选片台.cmd / 停止选片台.cmd     Windows 双击入口
-启动选片台.command / 停止选片台.command  macOS 双击入口
+启动选片台.command / 停止选片台.command  macOS 备用入口（浏览器版）
 push.ps1 / 推送更新.cmd           一键提交并推送到 GitHub（Windows 双击）
 使用说明.md            完整文档（含版本历史）
 ```
+
+`dist/` 里是打好的 `.app` 和 zip，不进仓库，发版走 Releases。
 
 ## 更新到 GitHub
 
