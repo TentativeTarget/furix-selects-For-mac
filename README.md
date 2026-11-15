@@ -12,9 +12,14 @@
 
 ## 启动
 
-**macOS**：双击 `FURIX选片台.app`，就这样。窗口里就一个选片台，不用另装浏览器、也不用起服务；关掉窗口进程就结束。第一次点「打开照片文件夹」会弹 macOS 的授权窗，点允许就行。
+**macOS**：下载 `FURIX选片台_v3.8.2_macOS.dmg`，打开后把图标拖进「应用程序」，然后从启动台或应用程序文件夹打开。也可以用仓库里打好的 `.app`，双击直接跑。窗口里就一个选片台，不用另装浏览器、也不用起服务；关掉窗口进程就结束。第一次点「打开照片文件夹」会弹 macOS 的授权窗，点允许就行。
 
-要重新打包（改了网页之后）：`tools/build-mac-app.sh`，产物在 `dist/`。
+要重新打包（改了网页之后）：
+
+```bash
+tools/build-mac-app.sh   # 出 .app + 分发 zip
+tools/build-dmg.sh       # 出拖拽式安装包
+```
 
 **Windows**：双击 `启动选片台.cmd`，停止用 `停止选片台.cmd`。需要 Chrome / Edge 和 Python 3。
 
@@ -38,7 +43,9 @@ demo/                 示例图库
 desktop/main.js       桌面版主进程（Electron）：窗口、菜单、内置页面通道
 desktop/package.json
 tools/build-mac-app.sh  重新打包 macOS 桌面版 + 分发 zip
-tools/AppIcon.icns    应用图标
+tools/build-dmg.sh      重新生成拖拽式安装包（dmg）
+tools/dmg/              安装界面背景图
+ tools/AppIcon.icns    应用图标
 launcher.ps1 / stop.ps1           Windows 启动器
 启动选片台.cmd / 停止选片台.cmd     Windows 双击入口
 启动选片台.command / 停止选片台.command  macOS 备用入口（浏览器版）
