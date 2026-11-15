@@ -219,14 +219,14 @@ async function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1600,
     height: 1000,
-    minWidth: 1100,
-    minHeight: 700,
+    minWidth: 900,
+    minHeight: 600,
     show: false,
     backgroundColor: "#0b0c0e",
     title: "FURIX SELECTS · 选片台",
     // 去掉标题栏，红绿灯按 macOS 标准位置内嵌到顶栏里
     titleBarStyle: "hiddenInset",
-    trafficLightPosition: { x: 0, y: 18 },
+    trafficLightPosition: { x: 13, y: 23 },
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
@@ -236,6 +236,25 @@ async function createWindow() {
   });
 
   mainWindow.once("ready-to-show", () => mainWindow.show());
+
+  // 页面缩放时顶栏会跟着变高，红绿灯是原生控件不会自己动，
+  // 所以按当前 zoom 重算位置，让它始终落在顶栏中线上。
+  const TRAFFIC = { centerX: 20, centerY: 30.75, offsetX: 6.75, offsetY: 7.75 };
+  let appliedZoom = -1;
+  function syncTrafficLights() {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
+    const zoom = mainWindow.webContents.getZoomFactor() || 1;
+    if (zoom === appliedZoom) return;
+    appliedZoom = zoom;
+    mainWindow.setTrafficLightPosition({
+      x: Math.max(0, Math.round(TRAFFIC.centerX * zoom - TRAFFIC.offsetX)),
+      y: Math.max(0, Math.round(TRAFFIC.centerY * zoom - TRAFFIC.offsetY)),
+    });
+  }
+  syncTrafficLights();
+  mainWindow.webContents.on("zoom-changed", syncTrafficLights);
+  const zoomWatch = setInterval(syncTrafficLights, 300);
+  mainWindow.on("closed", () => clearInterval(zoomWatch));
 
   // 只在壳内逛，不让页面把窗口导航到外面去
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
