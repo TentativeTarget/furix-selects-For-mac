@@ -5094,8 +5094,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
 
 /* 项目空状态里的「关闭项目」入口：没有素材源时也能退回首页 */
 .pe-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin: 12px 0 0;
-  text-align: center;
 }
 
 .pe-foot .text-btn {
@@ -5135,4 +5138,56 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
 .mini-menu button.mini-menu-recent.is-current small {
   color: var(--gold);
   opacity: 0.7;
+}
+
+/* 项目卡上的切换项目：折叠在文字链接里，点开才列出最近项目 */
+
+
+.pe-foot-sep {
+  color: var(--faint);
+  font-size: 10px;
+}
+
+.pe-recent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 300px;
+  margin: 10px auto 0;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.pe-recent button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  color: var(--text-2);
+  font-size: 10.5px;
+  text-align: left;
+}
+
+.pe-recent button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+.pe-recent button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pe-recent button small {
+  flex: none;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 8.5px;
 }

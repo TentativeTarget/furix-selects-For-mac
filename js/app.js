@@ -236,6 +236,9 @@
     peExport: $("#pe-export"),
     peDelivery: $("#pe-delivery"),
     peCloseProject: $("#pe-close-project"),
+    peSwitch: $("#pe-switch"),
+    peFootSep: $("#pe-foot-sep"),
+    peRecent: $("#pe-recent"),
     btnNewProject: $("#btn-new-project"),
     btnOpenProject: $("#btn-open-project"),
     btnAdoptProject: $("#btn-adopt-project"),
@@ -1477,10 +1480,8 @@
     if (!el.projectMenu.hidden) renderProjectRecent();
   }
 
-  // 项目菜单顶部：最近 3 个项目，点一下就切过去
-  async function renderProjectRecent() {
-    if (!el.projectRecent) return;
-    const current = state.project ? state.project.code || state.project.name : "";
+  // 最近项目列表：IndexedDB 里存着句柄的优先，取不到就退回 localStorage 摘要
+  async function recentRows() {
     let rows = [];
     try {
       rows = await recentAll();
@@ -1494,6 +1495,14 @@
         rows = [];
       }
     }
+    return rows;
+  }
+
+  // 项目菜单顶部：最近 3 个项目，点一下就切过去
+  async function renderProjectRecent() {
+    if (!el.projectRecent) return;
+    const current = state.project ? state.project.code || state.project.name : "";
+    const rows = await recentRows();
     const others = rows.filter((row) => row.code !== current).slice(0, RECENT_MAX);
     if (el.projectRecentLabel) el.projectRecentLabel.hidden = others.length === 0;
     if (el.projectRecentSep) el.projectRecentSep.hidden = others.length === 0;
@@ -1514,6 +1523,39 @@
           "</small></button>"
       )
       .join("");
+  }
+
+  // 项目卡上的「切换项目」：点开才列出最近项目，卡片本身保持干净
+  let peRecentToken = 0;
+  async function refreshPeRecent() {
+    if (!el.peRecent) return;
+    const token = ++peRecentToken;
+    const rows = await recentRows();
+    if (token !== peRecentToken) return;
+    const current = state.project ? state.project.code || state.project.name : "";
+    const others = rows.filter((row) => row.code !== current).slice(0, RECENT_MAX);
+    const has = others.length > 0;
+    if (el.peSwitch) el.peSwitch.hidden = !has;
+    if (el.peFootSep) el.peFootSep.hidden = !has;
+    if (!has) {
+      el.peRecent.hidden = true;
+      el.peRecent.innerHTML = "";
+      return;
+    }
+    const wasOpen = !el.peRecent.hidden;
+    el.peRecent.innerHTML = others
+      .map(
+        (row) =>
+          '<button type="button" data-recent="' +
+          F.escapeHtml(row.code) +
+          '"><span>' +
+          F.escapeHtml(row.code) +
+          "</span><small>" +
+          F.escapeHtml(timeAgo(row.openedAt)) +
+          "</small></button>"
+      )
+      .join("");
+    el.peRecent.hidden = !wasOpen;
   }
 
   // 切换项目：先存当前项目（closeLibrary 内部同步发起保存），再按句柄打开目标项目。
@@ -4870,8 +4912,12 @@
     const projectMode = !!state.project;
     if (el.empty) el.empty.hidden = hasPhotos || projectMode;
     if (el.projectEmpty) el.projectEmpty.hidden = !projectMode || hasPhotos;
-    if (projectMode) renderProjectEmpty();
-    else renderHub();
+    if (projectMode) {
+      renderProjectEmpty();
+      refreshPeRecent();
+    } else {
+      renderHub();
+    }
   }
 
   async function finishLoad(photos, folderName, handle, writable) {
@@ -9556,6 +9602,18 @@
     });
     el.peSource.addEventListener("click", pickSource);
     if (el.peCloseProject) el.peCloseProject.addEventListener("click", closeLibrary);
+    if (el.peSwitch) {
+      el.peSwitch.addEventListener("click", () => {
+        if (!el.peRecent) return;
+        el.peRecent.hidden = !el.peRecent.hidden;
+      });
+    }
+    if (el.peRecent) {
+      el.peRecent.addEventListener("click", (event) => {
+        const btn = event.target.closest("button[data-recent]");
+        if (btn) switchToProject(btn.dataset.recent);
+      });
+    }
     el.peExport.addEventListener("click", () => openProjectExport());
     el.peDelivery.addEventListener("click", openDeliveryModal);
     el.btnNewProject.addEventListener("click", openProjectModal);
