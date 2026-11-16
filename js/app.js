@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    FURIX SELECTS — application
    ============================================================ */
 
@@ -235,6 +235,7 @@
     peSource: $("#pe-source"),
     peExport: $("#pe-export"),
     peDelivery: $("#pe-delivery"),
+    peCloseProject: $("#pe-close-project"),
     btnNewProject: $("#btn-new-project"),
     btnOpenProject: $("#btn-open-project"),
     btnAdoptProject: $("#btn-adopt-project"),
@@ -7429,6 +7430,7 @@
 
   function closeLibrary() {
     if (!state.photos.length && !state.project) return;
+    const wasProject = !!state.project;
     flushPendingMarks();
     if (state.project) saveProjectNow();
     stopExifScan(true);
@@ -7488,7 +7490,11 @@
     document.title = "FURIX SELECTS · 选片台";
     updateMenuState();
     closeMenu();
-    toast("已关闭图库，照片文件没有被修改。");
+    toast(
+      wasProject
+        ? "已关闭项目，照片和项目文件都没有被修改。"
+        : "已关闭图库，照片文件没有被修改。"
+    );
   }
 
   /* ============================================================
@@ -9103,17 +9109,21 @@
     const hasPhotos = state.photos.length > 0;
     const hasHandle = !!state.folderHandle;
     const hasMarks = activeMarkCount() > 0;
+    const hasProject = !!state.project;
     const actions = {
       rescan: hasPhotos && (hasHandle || state.demo),
       "export-catalog": hasPhotos,
       "import-catalog": hasPhotos,
       "clear-marks": hasMarks,
-      "close-library": hasPhotos
+      // 项目模式下即使一张素材都没挂，也要能退回首页
+      "close-library": hasPhotos || hasProject
     };
     $$("#menu button[data-action]").forEach((btn) => {
       const action = btn.dataset.action;
       if (action in actions) btn.disabled = !actions[action];
     });
+    const closeLabel = document.querySelector('#menu button[data-action="close-library"] span');
+    if (closeLabel) closeLabel.textContent = hasProject ? "关闭项目" : "关闭当前图库";
   }
 
   async function handleMenuAction(action) {
@@ -9489,6 +9499,7 @@
       openRecent(row.dataset.code);
     });
     el.peSource.addEventListener("click", pickSource);
+    if (el.peCloseProject) el.peCloseProject.addEventListener("click", closeLibrary);
     el.peExport.addEventListener("click", () => openProjectExport());
     el.peDelivery.addEventListener("click", openDeliveryModal);
     el.btnNewProject.addEventListener("click", openProjectModal);

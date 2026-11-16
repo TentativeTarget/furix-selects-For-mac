@@ -5091,3 +5091,13 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
 .foot-hint.is-danger {
   color: #e0796a;
 }
+
+/* 项目空状态里的「关闭项目」入口：没有素材源时也能退回首页 */
+.pe-foot {
+  margin: 12px 0 0;
+  text-align: center;
+}
+
+.pe-foot .text-btn {
+  font-size: 10.5px;
+}
