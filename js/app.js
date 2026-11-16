@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    FURIX SELECTS — application
    ============================================================ */
 
@@ -45,7 +45,7 @@
   const RECENT_DB = "furix-recent";
   const RECENT_STORE = "projects";
   const RECENT_MAX = 5;
-const RECENT_HUB_MAX = 3;
+const RECENT_HUB_MAX = 5;
   let recentDbPromise = null;
   let recentTimer = 0;
   const SKIP_DIRS = new Set([
@@ -4786,23 +4786,43 @@ const RECENT_HUB_MAX = 3;
       .map((record, index) => {
         const main = index === 0;
         const type = record.projectType === "fun" ? "玩拍" : "订单";
-        const stats = main
-          ? record.clients +
-            " 个客户 · 已交付 " +
-            record.delivered +
-            " / 未交付 " +
-            record.undelivered +
-            " · 底片 " +
-            fmtNum(record.negatives) +
-            " · 成品 " +
-            fmtNum(record.products)
-          : "底片 " + fmtNum(record.negatives) + " · 成品 " + fmtNum(record.products);
+        const clients = Number(record.clients) || 0;
+        const delivered = Number(record.delivered) || 0;
+        const undelivered = Number(record.undelivered) || 0;
+        const pct = clients > 0 ? Math.max(0, Math.min(100, Math.round((delivered / clients) * 100))) : 0;
+        // 只有最新那个项目带环形可视化，其余行只显示数据
+        const ring = main
+          ? '<span class="hub-ring" title="已交付 ' +
+            delivered +
+            " / " +
+            clients +
+            ' 个客户"><svg viewBox="0 0 36 36" aria-hidden="true">' +
+            '<circle class="hub-ring-track" cx="18" cy="18" r="15.5"></circle>' +
+            '<circle class="hub-ring-bar" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="' +
+            (97.4 * (1 - pct / 100)).toFixed(1) +
+            '"></circle></svg><b class="hub-ring-num">' +
+            pct +
+            "%</b></span>"
+          : "";
+        const stats =
+          clients +
+          " 个客户 · 已交付 " +
+          delivered +
+          " / 未交付 " +
+          undelivered +
+          " · 底片 " +
+          fmtNum(record.negatives) +
+          " · 成品 " +
+          fmtNum(record.products);
         return (
           '<div class="hub-row' +
           (main ? " is-main" : "") +
           '" data-code="' +
           F.escapeHtml(record.code) +
           '" role="button" tabindex="0">' +
+          '<span class="hub-ring-slot">' +
+          ring +
+          "</span>" +
           '<span class="hub-row-name">' +
           F.escapeHtml(record.code) +
           "</span>" +
