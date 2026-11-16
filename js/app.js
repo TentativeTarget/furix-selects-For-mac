@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    FURIX SELECTS — application
    ============================================================ */
 
@@ -44,7 +44,8 @@
 
   const RECENT_DB = "furix-recent";
   const RECENT_STORE = "projects";
-  const RECENT_MAX = 3;
+  const RECENT_MAX = 5;
+const RECENT_HUB_MAX = 3;
   let recentDbPromise = null;
   let recentTimer = 0;
   const SKIP_DIRS = new Set([
@@ -4778,7 +4779,7 @@
     if (!rows.length) {
       rows = recentLocalLoad().map((row) => Object.assign({}, row, { handle: null }));
     }
-    rows = rows.slice(0, RECENT_MAX);
+    rows = rows.slice(0, RECENT_HUB_MAX);
     el.hubRecent.hidden = rows.length === 0;
     if (!rows.length) return;
     el.hubList.innerHTML = rows
