@@ -10,7 +10,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="3.8.2"
+VERSION="3.10"
 APP="$ROOT/dist/FURIX选片台.app"
 VOLNAME="FURIX 选片台"
 DMG="$ROOT/dist/FURIX选片台_v${VERSION}_macOS.dmg"

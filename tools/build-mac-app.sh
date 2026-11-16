@@ -10,7 +10,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="3.8.2"
+VERSION="3.10"
 OUT_DIR="$ROOT/dist"
 APP_NAME="FURIX选片台.app"
 OUT_APP="$OUT_DIR/$APP_NAME"
