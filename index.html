@@ -7,7 +7,7 @@
 <meta name="description" content="FURIX SELECTS — 本地优先的照片选片台：快速浏览、键盘标记、即时筛选、批量另存。">
 <title>FURIX SELECTS · 选片台</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230d0e10'/%3E%3Cpath d='M22 46V19h22v6H29v6h12v6H29v9z' fill='%23e7c46a'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css?v=v383">
+<link rel="stylesheet" href="styles.css?v=v39">
 </head>
 <body>
 <div class="app no-library" id="app" data-view="grid">
@@ -73,6 +73,9 @@
       <div class="sidebar-section project-section" id="project-section" hidden>
         <div class="section-label">项目 / 客户 <button class="section-action" id="btn-project-menu" type="button">操作</button></div>
         <div class="mini-menu" id="project-menu" hidden>
+          <p class="mini-menu-label" id="project-recent-label" hidden>切换到最近项目</p>
+          <div id="project-recent" hidden></div>
+          <div class="menu-sep" id="project-recent-sep" hidden></div>
           <button type="button" data-action="sessions"><span>场次与客户</span></button>
           <button type="button" data-action="returns"><span>客户回传</span></button>
           <button type="button" data-action="delivery"><span>成品集 / 打包</span></button>
@@ -918,7 +921,7 @@
       </section>
     </div>
     <footer class="modal-foot">
-      <span class="foot-hint">FURIX SELECTS · v3.8.3 · 本地优先的选片工作流</span>
+      <span class="foot-hint">FURIX SELECTS · v3.9 · 本地优先的选片工作流</span>
       <div class="foot-actions"><button class="btn btn-primary" id="help-ok" type="button">开始选片</button></div>
     </footer>
   </div>
@@ -1308,8 +1311,8 @@
 <input type="file" id="file-input" webkitdirectory multiple hidden>
 <input type="file" id="json-input" accept="application/json,.json" hidden>
 
-<script src="js/platform.js?v=v383"></script>
-<script src="js/core.js?v=v383"></script>
-<script src="js/app.js?v=v383"></script>
+<script src="js/platform.js?v=v39"></script>
+<script src="js/core.js?v=v39"></script>
+<script src="js/app.js?v=v39"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    FURIX SELECTS — application
    ============================================================ */
 
@@ -254,6 +254,9 @@
     projectSection: $("#project-section"),
     btnProjectMenu: $("#btn-project-menu"),
     projectMenu: $("#project-menu"),
+    projectRecent: $("#project-recent"),
+    projectRecentLabel: $("#project-recent-label"),
+    projectRecentSep: $("#project-recent-sep"),
     btnSource: $("#btn-source"),
     sourceName: $("#source-name"),
     sourceSub: $("#source-sub"),
@@ -1471,6 +1474,57 @@
   function toggleProjectMenu() {
     if (!el.projectMenu) return;
     el.projectMenu.hidden = !el.projectMenu.hidden;
+    if (!el.projectMenu.hidden) renderProjectRecent();
+  }
+
+  // 项目菜单顶部：最近 3 个项目，点一下就切过去
+  async function renderProjectRecent() {
+    if (!el.projectRecent) return;
+    const current = state.project ? state.project.code || state.project.name : "";
+    let rows = [];
+    try {
+      rows = await recentAll();
+    } catch (err) {
+      rows = [];
+    }
+    if (!rows.length) {
+      try {
+        rows = recentLocalLoad().map((row) => Object.assign({}, row, { handle: null }));
+      } catch (err) {
+        rows = [];
+      }
+    }
+    const others = rows.filter((row) => row.code !== current).slice(0, RECENT_MAX);
+    if (el.projectRecentLabel) el.projectRecentLabel.hidden = others.length === 0;
+    if (el.projectRecentSep) el.projectRecentSep.hidden = others.length === 0;
+    el.projectRecent.hidden = others.length === 0;
+    if (!others.length) {
+      el.projectRecent.innerHTML = "";
+      return;
+    }
+    el.projectRecent.innerHTML = others
+      .map(
+        (row) =>
+          '<button type="button" class="mini-menu-recent" data-recent="' +
+          F.escapeHtml(row.code) +
+          '"><span>' +
+          F.escapeHtml(row.code) +
+          "</span><small>" +
+          F.escapeHtml(timeAgo(row.openedAt)) +
+          "</small></button>"
+      )
+      .join("");
+  }
+
+  // 切换项目：先存当前项目（closeLibrary 内部同步发起保存），再按句柄打开目标项目。
+  // 不在中间 await 保存，免得耗掉浏览器的“用户手势”，那样重新授权目录会被拒。
+  async function switchToProject(code) {
+    closeProjectMenu();
+    if (!code) return;
+    const current = state.project ? state.project.code || state.project.name : "";
+    if (code === current) return;
+    if (state.project) closeLibrary({ quiet: true });
+    await openRecent(code);
   }
 
   function handleProjectMenuAction(action) {
@@ -7428,8 +7482,9 @@
     toast("已清空当前图库的标记。");
   }
 
-  function closeLibrary() {
+  function closeLibrary(options) {
     if (!state.photos.length && !state.project) return;
+    const quiet = !!(options && options.quiet);
     const wasProject = !!state.project;
     flushPendingMarks();
     if (state.project) saveProjectNow();
@@ -7490,6 +7545,7 @@
     document.title = "FURIX SELECTS · 选片台";
     updateMenuState();
     closeMenu();
+    if (quiet) return;
     toast(
       wasProject
         ? "已关闭项目，照片和项目文件都没有被修改。"
@@ -9533,6 +9589,11 @@
       toggleProjectMenu();
     });
     el.projectMenu.addEventListener("click", (event) => {
+      const recent = event.target.closest("button[data-recent]");
+      if (recent) {
+        switchToProject(recent.dataset.recent);
+        return;
+      }
       const btn = event.target.closest("button[data-action]");
       if (btn) handleProjectMenuAction(btn.dataset.action);
     });

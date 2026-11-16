@@ -5101,3 +5101,38 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
 .pe-foot .text-btn {
   font-size: 10.5px;
 }
+
+/* 项目菜单顶部的「切换到最近项目」 */
+.mini-menu-label {
+  margin: 4px 8px 2px;
+  color: var(--faint);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+}
+
+.mini-menu button.mini-menu-recent {
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.mini-menu button.mini-menu-recent span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mini-menu button.mini-menu-recent small {
+  flex: none;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 8.5px;
+}
+
+.mini-menu button.mini-menu-recent.is-current {
+  color: var(--gold);
+}
+
+.mini-menu button.mini-menu-recent.is-current small {
+  color: var(--gold);
+  opacity: 0.7;
+}
