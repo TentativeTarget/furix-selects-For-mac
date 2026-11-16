@@ -6,16 +6,18 @@
 <meta name="color-scheme" content="dark">
 <meta name="description" content="FURIX SELECTS — 本地优先的照片选片台：快速浏览、键盘标记、即时筛选、批量另存。">
 <title>FURIX SELECTS · 选片台</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230d0e10'/%3E%3Cpath d='M22 46V19h22v6H29v6h12v6H29v9z' fill='%23e7c46a'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css?v=v310">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="stylesheet" href="styles.css?v=v311">
 </head>
 <body>
 <div class="app no-library" id="app" data-view="grid">
 
   <header class="topbar" id="topbar">
     <a class="brand" href="#" id="brand" aria-label="FURIX SELECTS 首页">
-      <span class="brand-mark">F</span>
-      <span class="brand-word">FURIX</span>
+      <span class="brand-mark"><img src="assets/icon.svg" alt=""></span>
+      <span class="brand-word"><img src="assets/word.svg" alt="FURIX"></span>
       <span class="brand-sub">SELECTS</span>
     </a>
 
@@ -262,7 +264,7 @@
         <section class="empty" id="empty">
           <div class="hub">
             <div class="hub-top">
-              <span class="hub-brand">FURIX SELECTS</span>
+              <span class="hub-brand"><img class="hub-mark" src="assets/icon.svg" alt=""><img class="hub-word" src="assets/word.svg" alt="FURIX"><span class="hub-sub">SELECTS</span></span>
               <span class="hub-note">本地运行 · 不上传 · 文件夹读写需要 Chrome / Edge</span>
               <button class="hub-demo" id="btn-demo" type="button">示例</button>
             </div>
@@ -924,7 +926,7 @@
       </section>
     </div>
     <footer class="modal-foot">
-      <span class="foot-hint">FURIX SELECTS · v3.10 · 本地优先的选片工作流</span>
+      <span class="foot-hint">FURIX SELECTS · v3.11 · 本地优先的选片工作流</span>
       <div class="foot-actions"><button class="btn btn-primary" id="help-ok" type="button">开始选片</button></div>
     </footer>
   </div>
@@ -1314,8 +1316,8 @@
 <input type="file" id="file-input" webkitdirectory multiple hidden>
 <input type="file" id="json-input" accept="application/json,.json" hidden>
 
-<script src="js/platform.js?v=v310"></script>
-<script src="js/core.js?v=v310"></script>
-<script src="js/app.js?v=v310"></script>
+<script src="js/platform.js?v=v311"></script>
+<script src="js/core.js?v=v311"></script>
+<script src="js/app.js?v=v311"></script>
 </body>
 </html>

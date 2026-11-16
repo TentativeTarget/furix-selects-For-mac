@@ -5246,3 +5246,63 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
 .hub-row.is-main .hub-ring-num {
   color: var(--text);
 }
+
+/* ============================================================
+   v3.11 品牌：真图标 + 矢量字标
+   ============================================================ */
+
+.brand-mark {
+  width: 26px;
+  height: 26px;
+  border: 0;
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-mark img {
+  display: block;
+  width: 26px;
+  height: 26px;
+}
+
+.brand-word {
+  display: flex;
+  align-items: center;
+  letter-spacing: 0;
+}
+
+.brand-word img {
+  display: block;
+  height: 13px;
+  width: auto;
+}
+
+.hub-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: inherit;
+  letter-spacing: 0;
+}
+
+.hub-brand .hub-mark {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.hub-brand .hub-word {
+  display: block;
+  height: 13px;
+  width: auto;
+}
+
+.hub-brand .hub-sub {
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+}
