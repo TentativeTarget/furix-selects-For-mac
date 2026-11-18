@@ -39,11 +39,14 @@ cp "$ROOT/desktop/main.js" "$APP_RES/main.js"
 cp "$ROOT/desktop/package.json" "$APP_RES/package.json"
 cp "$ROOT/index.html" "$ROOT/styles.css" "$ROOT/使用说明.md" "$ROOT/README.md" "$APP_RES/web/"
 cp -R "$ROOT/js" "$APP_RES/web/js"
+if [ -d "$ROOT/assets" ]; then
+  cp -R "$ROOT/assets" "$APP_RES/web/assets"
+fi
 if [ -d "$ROOT/demo" ]; then
   cp -R "$ROOT/demo" "$APP_RES/web/demo"
 fi
 
-cp "$ROOT/tools/AppIcon.icns" "$OUT_APP/Contents/Resources/AppIcon.icns"
+cp "$ROOT/assets/macos/AppIcon.icns" "$OUT_APP/Contents/Resources/AppIcon.icns"
 
 # 可执行文件改个名字，Finder 里才像一个正经软件
 mv "$OUT_APP/Contents/MacOS/Electron" "$OUT_APP/Contents/MacOS/FURIX"
