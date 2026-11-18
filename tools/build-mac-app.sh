@@ -46,7 +46,7 @@ if [ -d "$ROOT/demo" ]; then
   cp -R "$ROOT/demo" "$APP_RES/web/demo"
 fi
 
-cp "$ROOT/assets/macos/AppIcon.icns" "$OUT_APP/Contents/Resources/AppIcon.icns"
+cp "$ROOT/tools/AppIcon.mac.icns" "$OUT_APP/Contents/Resources/AppIcon.icns"
 
 # 可执行文件改个名字，Finder 里才像一个正经软件
 mv "$OUT_APP/Contents/MacOS/Electron" "$OUT_APP/Contents/MacOS/FURIX"
